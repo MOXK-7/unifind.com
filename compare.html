@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniFind - Compare</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="images/logo.ico" type="image/x-icon">
+        <script src="theme.js"></script>
+
+
+    <style>
+
+
+        /* NAVBAR */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 2rem;
+            background-color: var(--primary-color);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-links li a {
+            text-decoration: none;
+            color: rgba(255, 255, 255, 0.95);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        .nav-links li a:hover,
+        .nav-links li a.active {
+            color: #ffffff;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+        }
+
+        /* CONTAINER */
+        .container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        /* HEADER */
+        .compare-header {
+            margin-bottom: 2rem;
+        }
+
+        .compare-header h1 {
+            font-size: 2rem;
+            color: #000000;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+
+
+        /* GRID */
+        .compare-grid {
+            display: grid;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .compare-header-cell {
+            padding: 20px;
+            background: #f8f9fa;
+            border-right: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+        }
+
+        .uni-selector {
+            margin-top: 15px;
+            padding: 15px;
+            background: #fff;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        /* CARD STYLES */
+        .compare-card {
+            padding: 20px;
+            text-align: center;
+            border-right: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+            background: #fff;
+            transition: background 0.2s;
+            position: relative;
+            /* REQUIRED for the top-left button */
+        }
+
+        .compare-card:hover {
+            background: #fdfdfd;
+        }
+
+        .compare-logo {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            margin-bottom: 15px;
+            background: #fff;
+            padding: 5px;
+            border-radius: 8px;
+            border: 1px solid #eee;
+        }
+
+        /* TABLE DATA */
+        .data-label {
+            padding: 15px 20px;
+            background: #f1f3f4;
+            font-weight: 700;
+            color: #202124;
+            border-bottom: 1px solid #ddd;
+            border-right: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+        }
+
+        .data-value {
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+            border-right: 1px solid #eee;
+            color: #202124;
+            font-size: 0.95rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .visit-link {
+            display: inline-block;
+            margin-top: 10px;
+            font-size: 0.85rem;
+            color: var(--primary-color);
+            text-decoration: none;
+            border: 2px solid var(--primary-color);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .visit-link:hover {
+            background: var(--primary-color);
+            color: #fff;
+        }
+
+        @media (max-width: 900px) {
+            .navbar {
+                padding: 1rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .compare-grid {
+                display: block;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="logo">
+            <div class="logo1">
+                <i class="fa-solid fa-graduation-cap logoicon"></i>
+            </div>
+            <a href="index.html">UniFind</a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="dashboard.html">Search</a></li>
+            <li><a href="compare.html" class="active">Compare</a></li>
+            <li><a href="quiz.html">Quiz</a></li>
+            <li><a href="https://docs.google.com/document/d/1mDSlOQvTFq4kVFMardxZnPWsXhve5Zrcy3m3r0VnNRo/edit?usp=sharing" target="_blank" class="btn-guide"><i class="fa-solid fa-book"></i> User Guide</a></li>
+        </ul>
+        <div class="nav-right" id="navAuth"></div>
+    </nav>
+
+    <div class="container">
+        <div class="compare-header">
+            <h1>University Comparison</h1>
+            <p>Compare up to 3 universities side-by-side.</p>
+        </div>
+
+        <div class="compare-grid" id="compareGrid"></div>
+
+        <div id="emptyState" style="text-align: center; padding: 4rem; display: none;">
+            <i class="fa-solid fa-scale-balanced" style="font-size: 3rem; color: #ccc; margin-bottom: 1rem;"></i>
+            <h3 style="color: #000; font-weight: 800;">No universities selected</h3>
+            <p style="margin-bottom: 1.5rem; font-weight: 500;">Go to the Search page and save universities
+                to compare them.</p>
+            <a href="dashboard.html"
+                style="background: var(--primary-color); color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: 700;">Go
+                to Search</a>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script type="module" src="compare.js"></script>
+    <script src="theme.js"></script>
+    <script type="module" src="profile-load.js"></script>
+    <script src="data-seeder.js"></script>
+</body>
+
+</html>

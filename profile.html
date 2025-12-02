@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniFind - Profile</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="images/logo.ico" type="image/x-icon">
+        <script src="theme.js"></script>
+
+    <style>
+        /* --- GLOBAL VARIABLES (Matches Home/Dashboard) --- */
+
+
+        /* --- NAVBAR (Blue Style) --- */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 2rem;
+            background-color: var(--primary-logo);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-links li a {
+            text-decoration: none;
+            color: rgba(255, 255, 255, 0.95);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        .nav-links li a:hover,
+        .nav-links li a.active {
+            color: #ffffff;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+        }
+
+        /* --- PROFILE SPECIFIC STYLES --- */
+        .profile-image-container {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-secondary);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        /* Responsive Nav */
+        @media (max-width: 900px) {
+            .navbar {
+                padding: 1rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <div class="logo1">
+                <i class="fa-solid fa-graduation-cap logoicon"></i>
+            </div>
+            <a href="index.html">UniFind</a>
+        </div>
+
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="dashboard.html">Search</a></li>
+            <li><a href="compare.html">Compare</a></li>
+            <li><a href="quiz.html">Quiz</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="https://docs.google.com/document/d/1mDSlOQvTFq4kVFMardxZnPWsXhve5Zrcy3m3r0VnNRo/edit?usp=sharing" target="_blank" class="btn-guide"><i class="fa-solid fa-book"></i> User Guide</a></li>
+        </ul>
+
+        <div class="nav-right" id="navAuth">
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="profile-layout">
+
+            <aside class="profile-sidebar">
+                <div class="profile-image-container">
+                    <img id="profileImage" src="images/user.png" alt="Profile" class="profile-img-lg">
+                </div>
+                <h2 id="userName">Loading...</h2>
+                <p id="userEducation">...</p>
+                <p id="userEmail" style="font-size:0.9rem;">...</p>
+
+                <button class="btn-outline" style="width:100%; margin-top:1rem;"
+                    onclick="window.location.href='settings-account.html'">
+                    <i class="fa-solid fa-pen-to-square"></i> Edit Profile Account
+                </button>
+
+                <ul class="profile-menu">
+                    <li class="active" data-tab="saved">
+                        <i class="fa-solid fa-bookmark"></i> Saved Universities
+                    </li>
+                    <li data-tab="comparisons">
+                        <i class="fa-solid fa-exchange-alt"></i> My Comparisons
+                    </li>
+                    <li data-tab="settings" onclick="window.location.href='settings.html'">
+                        <i class="fa-solid fa-cog"></i> Settings
+                    </li>
+                    <li id="logoutBtn">
+                        <i class="fa-solid fa-sign-out-alt"></i> Logout
+                    </li>
+                </ul>
+            </aside>
+
+            <main>
+                <div style="margin-bottom:1rem; color:var(--text-secondary);">
+                    <span style="cursor:pointer" onclick="window.location.href='index.html'">Home</span> /
+                    <span style="color: var(--primary-color); font-weight: 600;">Profile</span>
+                </div>
+
+                <div class="tab-content" id="savedTab">
+                    <h1 style="margin-bottom:1.5rem; color: var(--text-main);">My Profile</h1>
+
+                    <div class="banner-cta">
+                        <div style="display:flex; align-items:center; gap:15px;">
+                            <div
+                                style="background:#cfe2f3; padding:10px; border-radius:50%; color:var(--primary-color);">
+                                <i class="fa-solid fa-exchange-alt"></i>
+                            </div>
+                            <div>
+                                <h3 style="font-size:1.1rem; color: var(--text-main);">Compare Your Saved Universities
+                                </h3>
+                                <p style="font-size:0.9rem; color:var(--text-secondary);">Analyze your top choices
+                                    side-by-side.</p>
+                            </div>
+                        </div>
+                        <button class="btn-primary" onclick="window.location.href='compare.html'">
+                            <i class="fa-solid fa-chart-bar"></i> Go to Compare
+                        </button>
+                    </div>
+
+                    <div class="section-header">
+                        <h2 style="color: var(--text-main);">Saved Universities</h2>
+                        <div class="sort-options">
+                            <select id="sortSaved">
+                                <option value="name">Sort by Name</option>
+                                <option value="date">Sort by Date</option>
+                                <option value="location">Sort by Location</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div id="savedUniversitiesList"></div>
+                </div>
+
+                <div class="tab-content" id="comparisonsTab" style="display: none;">
+                    <h1 style="margin-bottom:1.5rem; color: var(--text-main);">My Comparisons</h1>
+                    <div class="comparisons-grid" id="comparisonsList"></div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script type="module" src="profile-load.js"></script>
+    <script type="module" src="profile.js"></script>
+    <script src="script.js"></script>
+    <script src="theme.js"></script>
+</body>
+
+</html>

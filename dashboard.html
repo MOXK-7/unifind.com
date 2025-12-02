@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniFind - Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="theme.js"></script>
+    <link rel="shortcut icon" href="images/logo.ico" type="image/x-icon">
+        <script src="theme.js"></script>
+
+
+    <style>
+
+
+        /* --- NAVBAR --- */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 2rem;
+            background-color: var(--primary-color);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-menu li a {
+            text-decoration: none;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        .nav-menu li a:hover {
+            color: #ffffff;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+        }
+
+        .nav-user-area {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        #dynamicText {
+            color: #ffffff;
+            font-weight: 600;
+            font-size: 1rem;
+            white-space: nowrap;
+        }
+
+        /* --- DASHBOARD LAYOUT --- */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 24px;
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            align-items: start;
+        }
+
+        /* --- FILTERS SIDEBAR --- */
+        .filters-sidebar {
+            background: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            position: sticky;
+            top: 90px;
+            height: fit-content;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+
+
+        .btn-reset {
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-reset:hover {
+            text-decoration: underline;
+        }
+
+        .filter-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .filter-label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 700;
+
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .filter-select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            background-color: #f8f9fa;
+
+            font-size: 0.9rem;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .filter-select:focus {
+            background-color: #fff;
+            border-color: var(--primary-color);
+        }
+
+        /* Checkbox Scroll Container */
+        .checkbox-scroll-container {
+            max-height: 150px;
+            overflow-y: auto;
+            color: var(--text-dark);
+
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+        }
+
+        .checkbox-container {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            color: var(--text-dark);
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        .filter-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .range-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        #applyFilters {
+            width: 100%;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        #applyFilters:hover {
+            background-color: #1557b0;
+        }
+
+        /* --- CONTENT AREA --- */
+        .content-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .search-container {
+            margin-bottom: 2rem;
+            background: transparent;
+            padding: 0;
+            box-shadow: none;
+        }
+
+        /* --- SEARCH TABS (Pills) --- */
+        .search-tabs {
+            margin-bottom: 1rem;
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-tab {
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            background-color: transparent;
+            border: 1px solid transparent;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .search-tab:hover {
+            background-color: #e8f0fe;
+            color: var(--primary-color);
+        }
+
+        .search-tab.active {
+            background-color: var(--primary-color);
+            color: white;
+            box-shadow: 0 2px 5px rgba(26, 115, 232, 0.3);
+        }
+
+        .search-input-wrapper {
+            background: #ffffff;
+            border-radius: 50px;
+            padding: 10px 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .search-input-wrapper:hover {
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+            transform: translateY(-2px);
+        }
+
+        .search-input-wrapper:focus-within {
+            border-color: var(--primary-color);
+            box-shadow: 0 8px 25px rgba(26, 115, 232, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .search-icon {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+        }
+
+        #searchInput {
+            border: none;
+            outline: none;
+            width: 100%;
+            font-size: 1rem;
+            color: var(--text-main);
+            background: transparent; /* This was the previous fix attempt */
+        }
+
+        .btn-icon {
+            background: #f1f3f4;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #5f6368;
+        }
+
+        /* --- CARDS & RESULTS --- */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
+            gap: 20px;
+        }
+
+        .uni-card {
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: flex;
+            gap: 1.5rem;
+            align-items: flex-start;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .uni-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .uni-logo {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            border-radius: 8px;
+            background: #fff;
+            padding: 5px;
+            border: 1px solid #eee;
+        }
+
+        .uni-content {
+            flex: 1;
+        }
+
+        .uni-content h2 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.2rem;
+            color: var(--text-main);
+        }
+
+        .uni-content .location {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .tags {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .tag {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .card-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .results-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-left: 10px;
+        }
+
+        #resultsCount {
+            font-weight: 600;
+            color: #555;
+            margin: 0;
+        }
+
+        @media (max-width: 900px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .uni-card {
+                flex-direction: column;
+            }
+
+            .nav-user-area {
+                display: none;
+            }
+        }
+    </style>
+<!-- Code injected by Five-server -->
+  <script async data-id="five-server" data-file="e:\unifind-project2x\unifind-project\dashboard.html" type="application/javascript" src="/fiveserver.js"></script>
+  </head>
+
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <div class="logo1">
+                <i class="fa-solid fa-graduation-cap logoicon"></i>
+            </div>
+            <a href="index.html">UniFind</a>
+        </div>
+
+        <ul class="nav-links">
+            <li><a href="index.html" class="active">Home</a></li>
+            <li><a href="dashboard.html">Search</a></li>
+            <li><a href="compare.html">Compare</a></li>
+            <li><a href="quiz.html">Quiz</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="https://docs.google.com/document/d/1mDSlOQvTFq4kVFMardxZnPWsXhve5Zrcy3m3r0VnNRo/edit?usp=sharing" target="_blank" class="btn-guide"><i class="fa-solid fa-book"></i> User Guide</a></li>
+        </ul>
+
+        <div class="nav-right" id="navAuth"></div>
+    </nav>
+
+    <div class="dashboard-grid">
+
+        <aside class="filters-sidebar">
+            <div class="filter-header">
+                <h3><i class="fa-solid fa-filter"></i> Filters</h3>
+                <button id="resetFilters" class="btn-reset">Reset</button>
+            </div>
+
+            <div class="filter-group">
+                <label class="filter-label">Sort Order</label>
+                <select id="sortSelect" class="filter-select">
+                    <option value="name">Name: A-Z</option>
+                    <option value="nameDesc">Name: Z-A</option>
+                    <option value="tuition">Tuition: Low to High</option>
+                    <option value="tuitionDesc">Tuition: High to Low</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label class="filter-label">Location (Select Multiple)</label>
+                <div class="checkbox-scroll-container">
+                    <label class="filter-option"><input type="checkbox" name="location" value="Cairo"> Cairo</label>
+                    <label class="filter-option"><input type="checkbox" name="location" value="Giza"> Giza</label>
+                    <label class="filter-option"><input type="checkbox" name="location" value="Alexandria"> Alexandria</label>
+                    <label class="filter-option"><input type="checkbox" name="location" value="Dakahlia"> Dakahlia</label>
+                    <label class="filter-option"><input type="checkbox" name="location" value="Red Sea"> Red Sea</label>
+                    <label class="filter-option"><input type="checkbox" name="location" value="Beheira"> Beheira</label>
+                    <label class="filter-option"><input type="checkbox" name="location" value="Fayoum"> Fayoum</label>
+                    <label class="filter-option"><input type="checkbox" name="location" value="Gharbia"> Gharbia</label>
+                    <label class="filter-option"><input type="checkbox" name="location" value="Ismailia"> Ismailia</label>
+                    <label class="filter-option"><input type="checkbox" name="location" value="Monufia"> Monufia</label>
+                    <label class="filter-option"><input type="checkbox" name="location" value="Minya"> Minya</label>
+                    <label class="filter-option"><input type="checkbox" name="location" value="Qalyubia"> Qalyubia</label>
+                    <label class="filter-option"><input type="checkbox" name="location" value="New Valley"> New Valley</label>
+                    <label class="filter-option"><input type="checkbox" name="location" value="Suez"> Suez</label>
+                    <label class="filter-option"><input type="checkbox" name="location" value="Aswan"> Aswan</label>
+                    <label class="filter-option"><input type="checkbox" name="location" value="Assiut"> Assiut</label>
+                    <label class="filter-option"><input type="checkbox" name="location" value="Beni Suef"> Beni Suef</label>
+                    <label class="filter-option"><input type="checkbox" name="location" value="Port Said"> Port Said</label>
+                    <label class="filter-option"><input type="checkbox" name="location" value="Damietta"> Damietta</label>
+                    <label class="filter-option"><input type="checkbox" name="location" value="Sharkia"> Sharkia</label>
+                    <label class="filter-option"><input type="checkbox" name="location" value="South Sinai"> South Sinai</label>
+                    <label class="filter-option"><input type="checkbox" name="location" value="Kafr El Sheikh"> Kafr El Sheikh</label>
+                    <label class="filter-option"><input type="checkbox" name="location" value="Matrouh"> Matrouh</label>
+                    <label class="filter-option"><input type="checkbox" name="location" value="Luxor"> Luxor</label>
+                    <label class="filter-option"><input type="checkbox" name="location" value="Qena"> Qena</label>
+                    <label class="filter-option"><input type="checkbox" name="location" value="North Sinai"> North Sinai</label>
+                    <label class="filter-option"><input type="checkbox" name="location" value="Sohag"> Sohag</label>
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <label class="filter-label">Faculty / Major</label>
+                <select id="facultyFilter" class="filter-select">
+                    <option value="">All Faculties</option>
+                    <option value="Engineering">Engineering</option>
+                    <option value="Medicine">Medicine</option>
+                    <option value="Pharmacy">Pharmacy</option>
+                    <option value="Dentistry">Dentistry</option>
+                    <option value="Business">Business & Commerce</option>
+                    <option value="Computer Science">Computer Science & AI</option>
+                    <option value="Mass Communication">Mass Communication</option>
+                    <option value="Al-Alsun">Al-Alsun (Languages)</option>
+                    <option value="Archeology">Archeology</option>
+                    <option value="Tourism">Tourism & Hotels</option>
+                    <option value="Law">Law</option>
+                    <option value="Arts">Arts & Design</option>
+                    <option value="Science">Science</option>
+                    <option value="Agriculture">Agriculture</option>
+                    <option value="Education">Education</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label class="filter-label">University Type</label>
+                <div class="checkbox-container">
+                    <label class="filter-option">
+                        <input type="checkbox" name="type" value="Public" checked> Public University
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox" name="type" value="Private" checked> Private University
+                    </label>
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <label class="filter-label">Max Tuition</label>
+                <div class="range-labels">
+                    <span id="minTuitionValue">0</span>
+                    <span id="maxTuitionValue" style="color: var(--primary-color); font-weight: bold;">EGP 300,000</span>
+                </div>
+                <input type="range" id="tuitionRange" class="filter-range" min="0" max="300000" step="10000" value="300000">
+            </div>
+
+            <button id="applyFilters">Apply Filters</button>
+        </aside>
+
+        <main class="results-area">
+
+            <div class="content-header">
+                <div class="search-container">
+                    <div class="search-tabs">
+                        <div class="search-tab active" data-mode="local">
+                            <i class="fa-solid fa-database"></i> UniFind Database
+                        </div>
+                        <div class="search-tab" data-mode="web">
+                            <i class="fa-solid fa-globe"></i> Global Web Search
+                        </div>
+                    </div>
+
+                    <div class="search-input-wrapper">
+                        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                        <input type="text" id="searchInput" placeholder="Search for universities or programs...">
+                        <button id="clearSearch" class="btn-icon">
+                            <i class="fa-solid fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="results-toolbar">
+                <p id="resultsCount">Loading universities...</p>
+            </div>
+
+            <div id="universitiesList" class="cards-grid"></div>
+
+            <div id="loadingMessage" style="text-align: center; padding: 2rem; display:none;">
+                <i class="fa-solid fa-spinner fa-spin fa-2x" style="color: var(--primary-color);"></i>
+                <p>Searching...</p>
+            </div>
+
+            <div id="noResults" style="text-align: center; padding: 3rem; display: none;">
+                <i class="fa-solid fa-university" style="font-size: 3rem; color: #ddd; margin-bottom: 1rem;"></i>
+                <h3>No universities found</h3>
+                <p style="color: #666;">Try adjusting your filters or switch to <b>Global Web Search</b></p>
+                <button class="btn-primary" id="tryWebSearchBtn" style="margin-top:1rem;">
+                    <i class="fa-solid fa-globe"></i> Search Web
+                </button>
+            </div>
+        </main>
+    </div>
+
+    <script src="dashboard1.js" type="module"></script>
+    <script src="script.js"></script>
+    <script type="module" src="profile-load.js"></script>
+    <script type="module" src="greetings.js"></script>
+    <script src="data-seeder.js"></script>
+</body>
+
+</html>

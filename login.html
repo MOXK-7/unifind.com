@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniFind - Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="images/logo.ico" type="image/x-icon">
+</head>
+
+<body style="background-image: url(/images/uni1.jpg);">
+    <nav class="navbar">
+
+        <div class="logo">
+
+            <div class="logo1">
+                <i class="fa-solid fa-graduation-cap logoicon"></i>
+            </div>
+            UniFind
+        </div>
+        <div class="menu-toggle"><i class="fa-solid fa-bars"></i></div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="dashboard.html">Search</a></li>
+            <li><a href="compare.html">Compare</a></li>
+            <li><a href="compare.html">Quiz</a></li>
+        </ul>
+        <div class="nav-right">
+            <a href="signup.html" class="btn-primary">Sign Up</a>
+        </div>
+    </nav>
+
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h1>Welcome Back</h1>
+                <p>Login to continue your university search</p>
+            </div>
+
+            <form id="loginForm">
+                <div class="form-group" style="text-align: left;">
+                    <label>Email Address</label>
+                    <input type="email" id="email" class="form-input" placeholder="name@example.com" required>
+                </div>
+                <div class="form-group" style="text-align: left;">
+                    <label>Password</label>
+                    <input type="password" id="password" class="form-input" placeholder="••••••••" required>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; margin-bottom: 1.5rem; font-size: 0.9rem;">
+                    <label style="display: flex; align-items: center; gap: 5px;">
+                        <input type="checkbox" id="rememberMe"> Remember me
+                    </label>
+                    <a href="#" id="forgotPassword" style="color: var(--primary-blue);">Forgot Password?</a>
+                </div>
+
+                <button type="submit" class="btn-primary" style="width: 100%;">Login</button>
+                <div id="loginMessage" style="margin-top: 1rem; text-align: center;"></div>
+            </form>
+
+            <div class="auth-footer">
+                Don't have an account? <a href="signup.html">Sign up</a>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        // Import from the updated service file
+        import { login, resetPassword } from './auth-service.js';
+
+        // Login Logic
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const rememberMe = document.getElementById('rememberMe').checked;
+            const messageDiv = document.getElementById('loginMessage');
+
+            messageDiv.style.color = 'var(--text-grey)';
+            messageDiv.textContent = 'Logging in...';
+
+            // Pass rememberMe preference to the login function
+            const result = await login(email, password, rememberMe);
+
+            if (result.success) {
+                messageDiv.style.color = 'green';
+                messageDiv.textContent = 'Login successful! Redirecting...';
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 1000);
+            } else {
+                messageDiv.style.color = 'red';
+                messageDiv.textContent = result.error;
+            }
+        });
+
+        // Forgot Password Logic
+        document.getElementById('forgotPassword').addEventListener('click', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const messageDiv = document.getElementById('loginMessage');
+
+            if (!email) {
+                alert('Please enter your email address in the field above to reset your password.');
+                document.getElementById('email').focus();
+                return;
+            }
+
+            if (confirm(`Send password reset link to ${email}?`)) {
+                messageDiv.textContent = 'Sending reset link...';
+                messageDiv.style.color = 'var(--text-grey)';
+
+                const result = await resetPassword(email);
+
+                if (result.success) {
+                    messageDiv.style.color = 'green';
+                    messageDiv.textContent = 'Password reset email sent! Please check your inbox.';
+                } else {
+                    messageDiv.style.color = 'red';
+                    messageDiv.textContent = 'Error: ' + result.error;
+                }
+            }
+        });
+    </script>
+    <script src="script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniFind - Settings</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="theme.js"></script>
+    <link rel="shortcut icon" href="images/logo.ico" type="image/x-icon">
+    <style>
+        /* FAQ Animation Styles */
+        .faq-item {
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 10px;
+        }
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+        .faq-question {
+            width: 100%;
+            text-align: left;
+            background: none;
+            border: none;
+            padding: 15px 0;
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--text-dark);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .faq-question:hover {
+            color: var(--primary-color);
+        }
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            color: var(--text-grey);
+            font-size: 0.95rem;
+            padding: 0 5px;
+        }
+        .faq-item.active .faq-answer {
+            max-height: 200px; /* Adjust based on content length */
+            padding-bottom: 15px;
+        }
+        .faq-icon {
+            transition: transform 0.3s ease;
+        }
+        .faq-item.active .faq-icon {
+            transform: rotate(180deg);
+        }
+        .about-header {
+            text-align: center; 
+            padding: 2rem 0;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 1.5rem;
+        }
+        .version-badge {
+            background-color: var(--bg-light); 
+            color: var(--text-grey); 
+            padding: 2px 8px; 
+            border-radius: 12px; 
+            font-size: 0.8rem;
+            margin-left: 5px;
+            border: 1px solid var(--border-color);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <!-- <div class="logo">
+            <i class="fa-solid fa-graduation-cap"></i> UniFind
+        </div> -->
+               <div class="logo">
+
+                                <div class="logo1">
+                        <i class="fa-solid fa-graduation-cap logoicon"></i>
+                    </div>
+                    UniFind
+                            </div>
+        <div class="menu-toggle"><i class="fa-solid fa-bars"></i></div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="dashboard.html">Search</a></li>
+            <li><a href="compare.html">Compare</a></li>
+        </ul>
+        <div class="nav-right" id="navAuth"></div>
+    </nav>
+    <div class="container">
+        <div class="profile-layout">
+            
+            <aside class="profile-sidebar">
+                <div class="profile-image-container">
+                    <img id="profileImage" src="images/user.png" alt="Profile" class="profile-img-lg">
+                </div>
+                
+                <h2 id="userName">Loading...</h2>
+                <p id="userEducation">...</p>
+                <p id="userEmail" style="font-size:0.9rem; color:var(--text-grey); margin-bottom: 1rem;">...</p>
+                
+                <button class="btn-outline" style="width:100%; margin-bottom:1rem;" onclick="window.location.href='profile.html'">
+                    <i class="fa-solid fa-user"></i> View My Profile
+                </button>
+
+                <ul class="profile-menu">
+                    <li onclick="window.location.href='profile.html'">
+                        <i class="fa-solid fa-bookmark"></i> Saved Universities
+                        <!-- <span id="savedCount" class="badge">0</span> -->
+                    </li>
+                    <li onclick="window.location.href='compare.html'">
+                        <i class="fa-solid fa-exchange-alt"></i> My Comparisons
+                        <!-- <span id="comparisonsCount" class="badge">0</span> -->
+                    </li>
+                    <li class="active" onclick="window.location.href='settings.html'">
+                        <i class="fa-solid fa-cog"></i> Settings
+                    </li>
+                    <li id="logoutBtn" style="color: #d93025; margin-top: 0.5rem; padding-top: 0.5rem;">
+                        <i class="fa-solid fa-sign-out-alt"></i> Logout
+                    </li>
+                </ul>
+            </aside>
+
+            <main>
+                <div style="margin-bottom:1rem; color:var(--text-grey);">
+                    <span style="cursor:pointer" onclick="window.location.href='index.html'">Home</span> / 
+                    <span style="cursor:pointer" onclick="window.location.href='profile.html'">Profile</span> / 
+                    <span style="color: var(--primary-blue);">Settings</span>
+                </div>
+                
+                <h1 style="margin-bottom:1.5rem;">Settings</h1>
+
+                <!-- Appearance Section -->
+                <div class="settings-section">
+                    <h2><i class="fa-solid fa-paint-brush" style="margin-right: 0.5rem;"></i>Appearance</h2>
+                    <p style="color: var(--text-grey); margin-bottom: 1rem;">Customize how UniFind looks on your device.</p>
+                    
+                    <div class="theme-switcher-container">
+                        <button class="theme-btn active" onclick="setTheme('light')" id="btn-light">
+                            <i class="fa-solid fa-sun"></i> Light
+                        </button>
+                        <button class="theme-btn" onclick="setTheme('dark')" id="btn-dark">
+                            <i class="fa-solid fa-moon"></i> Dark
+                        </button>
+                        <button class="theme-btn" onclick="setTheme('system')" id="btn-system">
+                            <i class="fa-solid fa-desktop"></i> System
+                        </button>
+                    </div>
+                    <br>
+
+                    <div class="toggle-switch" style="padding-top: 1rem; border-top: solid 1px var(--text-grey);">
+                        <div>
+                            <label style="font-weight: 500;"><i class="fa-solid fa-face-grin"></i> Smart Greetings</label>
+                            <p style="font-size: 0.9rem; color: var(--text-grey); margin-top: 0.25rem;">
+                                Show random fun messages instead of just "Welcome"
+                            </p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="smartGreetingsToggle">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Notifications Section -->
+                <!-- <div class="settings-section">
+                    <h2><i class="fa-solid fa-bell" style="margin-right: 0.5rem;"></i>Notifications</h2>
+                    
+                    <div class="toggle-switch">
+                        <div>
+                            <label style="font-weight: 500;">New University Programs</label>
+                            <p style="font-size: 0.9rem; color: var(--text-grey); margin-top: 0.25rem;">
+                                Get notified when new programs are added
+                            </p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="notifyPrograms" >
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="toggle-switch">
+                        <div>
+                            <label style="font-weight: 500;">Fee Updates</label>
+                            <p style="font-size: 0.9rem; color: var(--text-grey); margin-top: 0.25rem;">
+                                Notify me when saved universities update fees
+                            </p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="notifyFees" >
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="toggle-switch">
+                        <div>
+                            <label style="font-weight: 500;">Weekly Newsletter</label>
+                            <p style="font-size: 0.9rem; color: var(--text-grey); margin-top: 0.25rem;">
+                                Receive weekly updates and tips
+                            </p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="newsletter">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div> -->
+
+                <!-- NEW: About Section (Version 1: With FAQ) -->
+                <div class="settings-section">
+                    <h2><i class="fa-solid fa-circle-info" style="margin-right: 0.5rem;"></i>About</h2>
+                    
+                    <div class="about-header">
+                        <div class="logov">
+                        <i class="fa-solid fa-graduation-cap" style="font-size: 3.5rem; color: white; margin-bottom: 1rem;"></i>
+                    </div>
+                        <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem;">
+                            UniFind <span class="version-badge">v2.0.0</span>
+                        </h3>
+                        <p style="color: var(--text-grey); max-width: 400px; margin: 0 auto; line-height: 1.6;">
+                            UniFind is your ultimate companion for higher education in Egypt. We help you compare programs, tuition fees, and university rankings seamlessly.
+                        </p>
+                    </div>
+
+                    <h3 style="margin-bottom: 1rem; font-size: 1.1rem;">Frequently Asked Questions</h3>
+                    
+                    <div class="faq-container">
+                        <div class="faq-item">
+                            <button class="faq-question">
+                                Is UniFind free to use?
+                                <i class="fa-solid fa-chevron-down faq-icon"></i>
+                            </button>
+                            <div class="faq-answer">
+                                <p>Yes! UniFind is 100% free for students. You can search, compare, and save university profiles without any hidden costs.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <button class="faq-question">
+                                How accurate are the tuition fees?
+                                <i class="fa-solid fa-chevron-down faq-icon"></i>
+                            </button>
+                            <div class="faq-answer">
+                                <p>We update our database directly from official university announcements. However, fees are subject to change by the universities annually.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <button class="faq-question">
+                                Can I apply directly through the app?
+                                <i class="fa-solid fa-chevron-down faq-icon"></i>
+                            </button>
+                            <div class="faq-answer">
+                                <p>Currently, we provide links to the official university application portals. Direct application features are coming in v2.0.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script type="module" src="profile-load.js"></script>
+    <script type="module" src="settings.js"></script> 
+    <script type="module" src="greetings.js"></script>
+    <script src="script.js"></script>
+
+    <!-- FAQ Animation Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const faqItems = document.querySelectorAll('.faq-item');
+
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                
+                question.addEventListener('click', () => {
+                    // Toggle active class
+                    const isActive = item.classList.contains('active');
+                    
+                    // Close all other items (optional - remove if you want multiple open)
+                    faqItems.forEach(otherItem => {
+                        otherItem.classList.remove('active');
+                    });
+
+                    // If it wasn't active before, make it active now
+                    if (!isActive) {
+                        item.classList.add('active');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
