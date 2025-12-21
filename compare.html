@@ -8,11 +8,24 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <link rel="shortcut icon" href="images/logo.ico" type="image/x-icon">
-        <script src="theme.js"></script>
-
 
     <style>
+        /* --- GLOBAL & COLORS --- */
+        :root {
+            --primary-color: #1a73e8;
+            --bg-page: #f0f2f5;
+            --bg-card: #ffffff;
+            --text-main: #202124;
+            --text-secondary: #444444;
+            --border-color: #dadce0;
+        }
 
+        body {
+            background-color: var(--bg-page);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-main);
+            margin: 0;
+        }
 
         /* NAVBAR */
         .navbar {
@@ -27,7 +40,24 @@
             z-index: 1000;
         }
 
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
+        .logoicon {
+            color: #ffffff !important;
+            font-size: 1.4rem;
+        }
+
+        .logo a {
+            text-decoration: none;
+            color: #ffffff !important;
+            font-weight: 800;
+            font-size: 1.4rem;
+            letter-spacing: -0.5px;
+        }
 
         .nav-links {
             display: flex;
@@ -70,7 +100,10 @@
             margin-bottom: 0.5rem;
         }
 
-
+        .compare-header p {
+            color: #333333;
+            font-size: 1.1rem;
+        }
 
         /* GRID */
         .compare-grid {
@@ -195,28 +228,11 @@
             <a href="index.html">UniFind</a>
         </div>
         <ul class="nav-links">
-    <li><a href="index.html">Home</a></li>
-    <li><a href="dashboard.html">Search</a></li>
-    <li><a href="compare.html">Compare</a></li>
-    <li><a href="quiz.html">Quiz</a></li>
-    <li><a href="about.html">About</a></li>
-
-    <li>
-        <a href="https://docs.google.com/document/d/1mDSlOQvTFq4kVFMardxZnPWsXhve5Zrcy3m3r0VnNRo/edit?usp=sharing" 
-           target="_blank" 
-           class="btn-guide">
-           <i class="fa-solid fa-book"></i> User Guide
-        </a>
-    </li>
-
-    <li>
-        <a href="https://drive.google.com/file/d/1ir0zuvg1bpsiQObJYVYTI4l3HxAiL3di/view?usp=drive_link" 
-           target="_blank" 
-           class="btn-doc">
-           <i class="fa-solid fa-file-lines"></i> Docs
-        </a>
-    </li>
-</ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="dashboard.html">Search</a></li>
+            <li><a href="compare.html" class="active">Compare</a></li>
+            <li><a href="quiz.html">Quiz</a></li>
+        </ul>
         <div class="nav-right" id="navAuth"></div>
     </nav>
 
@@ -231,7 +247,7 @@
         <div id="emptyState" style="text-align: center; padding: 4rem; display: none;">
             <i class="fa-solid fa-scale-balanced" style="font-size: 3rem; color: #ccc; margin-bottom: 1rem;"></i>
             <h3 style="color: #000; font-weight: 800;">No universities selected</h3>
-            <p style="margin-bottom: 1.5rem; font-weight: 500;">Go to the Search page and save universities
+            <p style="color:#444; margin-bottom: 1.5rem; font-weight: 500;">Go to the Search page and save universities
                 to compare them.</p>
             <a href="dashboard.html"
                 style="background: var(--primary-color); color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: 700;">Go
