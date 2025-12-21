@@ -101,7 +101,7 @@ function renderCompareGrid() {
     // --- 1. HEADER ROW ---
     let html = `
         <div class="compare-header-cell">
-            <h3 style="color: #000; font-size: 1.1rem; margin-bottom: 10px;">Comparison</h3>
+            <h3 style="color: var(--text-dark); font-size: 1.1rem; margin-bottom: 10px;">Comparison</h3>
             <div class="uni-selector">
                 ${renderUniversitySelector()}
             </div>
@@ -133,8 +133,8 @@ function renderCompareGrid() {
 
                 <img src="${primarySrc}" class="compare-logo" alt="${uni.name}" onerror="${fallbackLogic}">
                      
-                <h3 style="color: #000; font-weight: 800;">${uni.name}</h3>
-                <span class="location" style="color: #444; font-weight: 500;"><i class="fa-solid fa-map-marker-alt"></i> ${uni.location}</span>
+                <h3 style="color: var(--text-dark); font-weight: 800;">${uni.name}</h3>
+                <span class="location" style="color: var(--text-grey); font-weight: 500;"><i class="fa-solid fa-map-marker-alt"></i> ${uni.location}</span>
                 <br>
                 <a href="${uni.website}" target="_blank" class="visit-link">Visit Website</a>
             </div>
@@ -143,9 +143,9 @@ function renderCompareGrid() {
 
     if (selectedUnisArray.length < 3) {
         html += `
-            <div class="compare-card add-slot" onclick="document.querySelector('.uni-selector').classList.add('highlight')" style="cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 200px; border: 2px dashed #bbb; background: #fafafa;">
-                <i class="fa-solid fa-plus-circle fa-2x" style="color:#666; margin-bottom:10px;"></i>
-                <p style="color: #333; font-weight: 600;">Add University</p>
+            <div class="compare-card add-slot" onclick="document.querySelector('.uni-selector').classList.add('highlight')" style="cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 200px; border: 2px dashed var(--border-color); background: var(--bg-card);">
+                <i class="fa-solid fa-plus-circle fa-2x" style="color: var(--text-grey); margin-bottom:10px;"></i>
+                <p style="color: var(--text-dark); font-weight: 600;">Add University</p>
             </div>
         `;
     }
@@ -157,11 +157,11 @@ function renderCompareGrid() {
         { label: 'Language', key: 'language', icon: 'fa-language' },
         { label: 'System', key: 'system', icon: 'fa-book', isComputed: true },
         { label: 'Career Prospects', key: 'careers', icon: 'fa-briefcase', isComputed: true, style: 'color: #1a73e8; font-weight: 700;' },
-        { label: 'Description', key: 'description', icon: 'fa-info-circle', style: 'font-size:0.9rem; line-height: 1.5; color: #202124;' }
+        { label: 'Description', key: 'description', icon: 'fa-info-circle', style: 'font-size:0.9rem; line-height: 1.5; color: var(--text-dark);' }
     ];
 
     rows.forEach(row => {
-        html += `<div class="data-label"><i class="fa-solid ${row.icon}" style="color:#555;"></i> ${row.label}</div>`;
+        html += `<div class="data-label"><i class="fa-solid ${row.icon}" style="color:var(--text-grey);"></i> ${row.label}</div>`;
         selectedUnisArray.forEach(uni => {
             let val;
             if (row.key === 'careers') val = getCareerSuggestions(uni);
@@ -169,7 +169,7 @@ function renderCompareGrid() {
             else val = uni[row.key] || '-';
 
             if (row.format) val = row.format(val);
-            const style = row.style ? `style="${row.style}"` : 'style="color: #202124;"';
+            const style = row.style ? `style="${row.style}"` : 'style="color: var(--text-dark);"';
             
             if (row.key === 'type') {
                 const isPublic = (val || '').toLowerCase().includes('public');
@@ -187,8 +187,8 @@ function renderCompareGrid() {
 }
 
 function renderUniversitySelector() {
-    let listHtml = `<p style="margin-bottom:10px; font-size:0.85rem; color:#202124; font-weight:800; text-transform:uppercase;">Saved Universities</p>`;
-    if (savedUniversities.length === 0) return `<p style="font-size:0.9rem; color:#555;">No saved universities.</p>`;
+    let listHtml = `<p style="margin-bottom:10px; font-size:0.85rem; color:var(--text-dark); font-weight:800; text-transform:uppercase;">Saved Universities</p>`;
+    if (savedUniversities.length === 0) return `<p style="font-size:0.9rem; color:var(--text-grey);">No saved universities.</p>`;
 
     savedUniversities.forEach(uni => {
         const isChecked = selectedUniversities.has(uni.id) ? 'checked' : '';
@@ -197,7 +197,7 @@ function renderUniversitySelector() {
         listHtml += `
             <label class="selector-option ${isDisabled ? 'disabled' : ''}" style="display:flex; align-items:center; gap:8px; padding:8px 0; cursor:${isDisabled ? 'not-allowed' : 'pointer'}; opacity: ${isDisabled ? '0.6' : '1'};">
                 <input type="checkbox" onchange="window.toggleUniSelection('${uni.id}')" ${isChecked} ${isDisabled} style="accent-color: var(--primary-blue); transform: scale(1.1);">
-                <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 150px; font-size: 0.95rem; color: #202124; font-weight: 500;">${uni.name}</span>
+                <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 150px; font-size: 0.95rem; color: var(--text-dark); font-weight: 500;">${uni.name}</span>
             </label>
         `;
     });

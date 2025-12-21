@@ -1,105 +1,14 @@
-// import { auth, onAuthStateChanged, getUserData } from './auth-service.js';
-
-// /**
-//  * profile-load.js
-//  * * Drop this file into any HTML page to automatically handle the 
-//  * User Profile / Login button in the navigation bar.
-//  * * Requirements:
-//  * 1. Your HTML must have a container with id="navAuth" inside the navbar.
-//  * Example: <div class="nav-right" id="navAuth"></div>
-//  * 2. This script must be loaded as a module: 
-//  * <script type="module" src="profile-load.js"></script>
-//  */
-
-// async function initProfileNav() {
-//     // 1. Find the container in the DOM
-//     const navAuth = document.getElementById('navAuth');
-    
-//     // If the element doesn't exist on this page, stop running
-//     if (!navAuth) return;
-
-//     // 2. Listen for authentication state changes
-//     onAuthStateChanged(auth, async (user) => {
-//         if (user) {
-//             // --- User is Logged In ---
-            
-//             // A. Immediate render using Auth Object (Fastest)
-//             // Use the photoURL from the Google/Firebase Auth object
-//             let photoURL = user.photoURL || 'images/user.png';
-//             let displayName = user.displayName || 'Profile';
-
-//             // Render immediately so the user sees something
-//             renderNav(navAuth, photoURL, displayName, true);
-
-//             // B. Database Sync (Optional but recommended)
-//             // Fetch latest data from Firestore to ensure image is up-to-date
-//             // (e.g., if they just changed it in Settings)
-//             try {
-//                 const result = await getUserData(user.uid);
-//                 if (result.success && result.data) {
-//                     const dbImage = result.data.profileImage;
-//                     // If Firestore has a different image than Auth, update the UI
-//                     if (dbImage && dbImage !== photoURL) {
-//                         renderNav(navAuth, dbImage, result.data.fullName, true);
-//                     }
-//                 }
-//             } catch (error) {
-//                 console.warn("Minor error syncing profile nav:", error);
-//             }
-
-//         } else {
-//             // --- User is Logged Out ---
-//             renderNav(navAuth, null, null, false);
-//         }
-//     });
-// }
-
-// /**
-//  * Renders the HTML for the navigation item
-//  */
-// function renderNav(container, imageSrc, name, isLoggedIn) {
-//     if (isLoggedIn) {
-//         container.innerHTML = `
-//             <div  class="user-avatar" title="${name}">
-//                 <img src="${imageSrc}" alt="${name}" style="width: 100%; height: 100%; object-fit: cover;">
-//             </div>
-//         `;
-//     // if (isLoggedIn) {
-//     //     container.innerHTML = `
-//     //         <a href="#" class="user-avatar" title="${name}">
-//     //             <img src="${imageSrc}" alt="${name}" style="width: 100%; height: 100%; object-fit: cover;">
-//     //         </a>
-//     //     `;
-//     } else {
-//         container.innerHTML = `
-//             <a href="login.html" class="btn-outline">Login</a>
-//         `;
-//     }
-// }
-
-// // Automatically run when the page loads
-// document.addEventListener('DOMContentLoaded', initProfileNav);
-
-
-
-
-
-
-
-
-
 import { auth, onAuthStateChanged, getUserData } from './auth-service.js';
+import { updateGreetingDisplay } from './greetings.js';
 
 async function initProfileNav() {
     const navAuth = document.getElementById('navAuth');
     if (!navAuth) return;
 
     // Global listener to close dropdown when clicking outside
-    // We add this once when the script loads
     window.addEventListener('click', (e) => {
         const dropdown = navAuth.querySelector('.dropdown-content');
         if (dropdown && dropdown.classList.contains('show')) {
-            // If the click was NOT inside the profile container, close the menu
             if (!navAuth.contains(e.target)) {
                 dropdown.classList.remove('show');
             }
@@ -112,15 +21,18 @@ async function initProfileNav() {
             let photoURL = user.photoURL || 'images/user.png';
             let displayName = user.displayName || 'Profile';
 
-            // 1. Render immediately
+            // 1. Render Navbar Items
             renderNav(navAuth, photoURL, displayName, true);
 
-            // 2. Database Sync (Optional)
+            // 2. Trigger Greeting Logic (Decides to Show or Hide based on Settings)
+            updateGreetingDisplay(user);
+
+            // 3. Database Sync (Optional)
             try {
                 const result = await getUserData(user.uid);
                 if (result.success && result.data && result.data.profileImage) {
                     if (result.data.profileImage !== photoURL) {
-                        const imgTag = navAuth.querySelector('img');
+                        const imgTag = navAuth.querySelector('img.profile-img-tag');
                         if (imgTag) imgTag.src = result.data.profileImage;
                     }
                 }
@@ -137,32 +49,57 @@ async function initProfileNav() {
 
 function renderNav(container, imageSrc, name, isLoggedIn) {
     if (isLoggedIn) {
-        // Inject HTML
+        // STYLE EXPLANATION:
+        // position: relative -> on the parent allows us to position children absolutely relative to IT.
+        // #dynamicText styles:
+        //   position: absolute -> Removes it from layout flow (stops pages from moving).
+        //   right: 100% -> Pushes it completely to the left of the avatar.
+        //   margin-right: 15px -> Adds a gap between text and avatar.
+        //   white-space: nowrap -> Ensures the name doesn't break into two lines.
+        
         container.innerHTML = `
-            <div class="profile-dropdown">
-                <div class="user-avatar" style="cursor: pointer;">
-                    <img src="${imageSrc}" alt="${name}">
-                </div>
-                <div class="dropdown-content">
-                    <a href="profile.html">My Profile</a>
-                    <hr>
-
-                    <a href="dashboard.html">Dashboard</a>
-                    <hr>
-
-                    <a href="#" id="logoutBtn" style="color: #d93025;">Logout</a>
+            <div style="position: relative; display: flex; align-items: center;">
+                <span id="dynamicText" style="
+                    position: absolute; 
+                    right: 100%; 
+                    top: 50%; 
+                    transform: translateY(-50%); 
+                    margin-right: 15px; 
+                    white-space: nowrap; 
+                    font-weight: 600; 
+                    font-size: 1rem; 
+                    display: none; 
+                    color: var(--text-dark);
+                    pointer-events: none;
+                "></span>
+                
+                <div class="profile-dropdown">
+                    <div class="user-avatar" style="cursor: pointer;">
+                        <img src="${imageSrc}" alt="${name}" class="profile-img-tag">
+                    </div>
+                    <div class="dropdown-content">
+                        <a href="profile.html">My Profile</a>
+                        <hr>
+                        <a href="dashboard.html">Dashboard</a>
+                        <hr>
+                        <a href="#" id="logoutBtn" style="color: #d93025;">Logout</a>
+                    </div>
                 </div>
             </div>
         `;
+
+        // Text Color Fix: Dashboard navbar is usually dark/blue, so text should be white there.
+        if(window.location.pathname.includes('dashboard.html')) {
+            const dt = container.querySelector('#dynamicText');
+            if(dt) dt.style.color = '#ffffff';
+        }
 
         // 1. Add CLICK Toggle Logic
         const avatarBtn = container.querySelector('.user-avatar');
         const dropdown = container.querySelector('.dropdown-content');
 
         avatarBtn.addEventListener('click', (e) => {
-            // Prevent this click from immediately triggering the window close listener
             e.stopPropagation(); 
-            // Toggle the 'show' class
             dropdown.classList.toggle('show');
         });
 
