@@ -2327,3 +2327,75 @@ option {
         padding: 6px 12px;
     }
 }
+/* ========================================= */
+/* 🎄 HOLIDAY SKIN (Add to bottom of style.css) */
+/* ========================================= */
+
+/* 1. Festive Color Palette Override */
+body.holiday-mode {
+    --primary-blue: #d42426;       /* Santa Red */
+    --primary-hover: #165b33;      /* Holly Green */
+    --primary-logo: #ffffff;
+    --primary-logoT: #d42426;
+    --accent-yellow: #ffbf00;      /* Gold */
+    --tag-bg: #fce8e6;             /* Light Red for tags */
+    --tag-text: #d42426;
+    --banner: #165b33;             /* Dark Green Banner */
+    --border-blue: #fbb0a9;
+}
+
+/* Dark Mode + Holiday Adjustments */
+[data-theme="dark"] body.holiday-mode {
+    --primary-blue: #ff5252;       /* Bright Red */
+    --primary-hover: #ff8a80;
+    --bg-light: #1a2e25;           /* Very dark green tint bg */
+    --banner: #0f241a;
+}
+
+/* 2. Santa Hat on Logo 🎅 */
+body.holiday-mode .logo {
+    position: relative;
+}
+
+body.holiday-mode .logo::after {
+    content: "🎅";
+    position: absolute;
+    top: -15px;
+    left: -10px;
+    font-size: 1.8rem;
+    transform: rotate(-15deg);
+    filter: drop-shadow(0 2px 2px rgba(0,0,0,0.2));
+    animation: hatBounce 2s infinite ease-in-out;
+}
+
+@keyframes hatBounce {
+    0%, 100% { transform: rotate(-15deg) translateY(0); }
+    50% { transform: rotate(-10deg) translateY(-3px); }
+}
+
+/* 3. Snowflakes Styling ❄️ */
+.snowflake {
+    position: fixed;
+    top: -10px;
+    color: #fff;
+    font-size: 1em;
+    font-family: Arial, sans-serif;
+    text-shadow: 0 0 5px #000;
+    user-select: none;
+    z-index: 9999;
+    pointer-events: none;
+    animation-name: fall, sway;
+    animation-duration: 10s, 3s;
+    animation-timing-function: linear, ease-in-out;
+    animation-iteration-count: infinite, infinite;
+}
+
+@keyframes fall {
+    0% { top: -10%; }
+    100% { top: 100%; }
+}
+
+@keyframes sway {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(15px); }
+}

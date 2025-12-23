@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniFind - Job Trends</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="images/logo.ico" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        /* --- 1. NAVBAR OVERRIDES --- */
+        .btn-guide, .btn-doc {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* --- 2. NEWS TICKER --- */
+        .news-ticker-wrap {
+            width: 100%;
+            background-color: #202124;
+            color: white;
+            padding: 10px 0;
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
+        }
+
+        .news-ticker-content {
+            display: inline-block;
+            animation: ticker 30s linear infinite;
+            padding-left: 100%;
+        }
+
+        .ticker-item {
+            display: inline-block;
+            padding: 0 2rem;
+            font-size: 0.9rem;
+        }
+
+        .ticker-item i {
+            color: #fbbc04;
+            margin-right: 5px;
+        }
+
+        @keyframes ticker {
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(-100%, 0, 0); }
+        }
+
+        /* --- 3. PAGE LAYOUT --- */
+        .trends-dashboard {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .chart-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .chart-header h3 { font-size: 1.1rem; color: var(--text-dark); }
+
+        /* --- 4. TABS & GRID --- */
+        .category-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            overflow-x: auto;
+            padding-bottom: 5px;
+        }
+
+        .cat-tab {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 0.6rem 1.2rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text-grey);
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .cat-tab:hover {
+            background: var(--bg-light);
+            color: var(--primary-blue);
+        }
+
+        .cat-tab.active {
+            background: var(--primary-blue);
+            color: white;
+            border-color: var(--primary-blue);
+        }
+
+        .trends-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        /* --- 5. CARD STYLES --- */
+        .trend-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .trend-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            border-color: var(--primary-blue);
+        }
+
+        .trend-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .trend-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--bg-light);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            color: var(--primary-blue);
+        }
+
+        .growth-badge {
+            background: rgba(19, 115, 51, 0.1); /* Default Light Mode Green BG */
+            color: #137333; /* Default Light Mode Green Text */
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Standard Text Styles */
+        .trend-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #202124; 
+        }
+
+        .trend-desc {
+            font-size: 0.95rem;
+            color: #5f6368;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .salary-badge {
+            display: inline-block;
+            background: var(--bg-light);
+            color: var(--text-dark);
+            border: 1px solid var(--border-color);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            width: fit-content;
+        }
+
+        /* --- 6. INSIGHTS CHIPS --- */
+        .skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 1.5rem;
+        }
+
+        .skill-chip {
+            background: var(--bg-light);
+            border: 1px solid var(--border-color);
+            color: var(--text-grey);
+            font-size: 0.75rem;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .insights-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.85rem;
+            color: var(--text-grey);
+        }
+
+        .insight-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .insight-item i {
+            color: var(--primary-blue);
+        }
+
+        .live-indicator {
+            margin-top: auto;
+            font-size: 0.85rem;
+            color: var(--text-grey);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .live-dot-wrap {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #fbbc04;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .live-dot.active { background-color: #137333; }
+
+        @keyframes pulse {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        /* --- DARK MODE CARD FIXES --- */
+        [data-theme="dark"] .trend-card {
+            background-color: #303134 !important;
+            border-color: #5f6368 !important;
+        }
+
+        [data-theme="dark"] .trend-title {
+            color: #e8eaed !important; 
+        }
+
+        [data-theme="dark"] .trend-desc {
+            color: #9aa0a6 !important; 
+        }
+
+        [data-theme="dark"] .salary-badge {
+            background-color: #3c4043 !important;
+            color: #e8eaed !important;
+            border-color: #5f6368 !important;
+        }
+        
+        [data-theme="dark"] .skill-chip {
+            background-color: #3c4043 !important;
+            color: #8ab4f8 !important;
+            border-color: #5f6368 !important;
+        }
+        
+        [data-theme="dark"] .insight-item {
+            color: #9aa0a6 !important;
+        }
+        
+        [data-theme="dark"] .live-dot-wrap {
+            color: #e8eaed !important;
+        }
+
+        /* --- FIX: BRIGHT GREEN BADGE FOR DARK MODE --- */
+        [data-theme="dark"] .growth-badge {
+            /* Vibrant Light Green Background Tint */
+            background-color: rgba(102, 187, 106, 0.2) !important;
+            /* Bright Neon Green Text */
+            color: #66bb6a !important; 
+        }
+
+        @media (max-width: 900px) {
+            .trends-dashboard {
+                grid-template-columns: 1fr;
+            }
+            .navbar .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <div class="logo1">
+                <i class="fa-solid fa-graduation-cap logoicon"></i>
+            </div>
+            <a href="index.html">UniFind</a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="dashboard.html">Search</a></li>
+            <li><a href="compare.html">Compare</a></li>
+            <li><a href="quiz.html">Quiz</a></li>
+            <li><a href="job-trends.html" class="active">Job Trends</a></li>
+            <li><a href="about.html">About</a></li>
+            
+            <li>
+                <a href="https://docs.google.com/document/d/1mDSlOQvTFq4kVFMardxZnPWsXhve5Zrcy3m3r0VnNRo/edit?usp=sharing" 
+                   target="_blank" 
+                   class="btn-guide">
+                   <i class="fa-solid fa-book"></i> User Guide
+                </a>
+            </li>
+
+            <li>
+                <a href="https://drive.google.com/file/d/1ir0zuvg1bpsiQObJYVYTI4l3HxAiL3di/view?usp=drive_link" 
+                   target="_blank" 
+                   class="btn-doc">
+                   <i class="fa-solid fa-file-lines"></i> Docs
+                </a>
+            </li>
+        </ul>
+        <div class="nav-right" id="navAuth"></div>
+    </nav>
+
+    <div class="news-ticker-wrap">
+        <div class="news-ticker-content">
+            <span class="ticker-item"><i class="fa-solid fa-bolt"></i> AI jobs see 45% salary increase in 2024</span>
+            <span class="ticker-item"><i class="fa-solid fa-globe"></i> Remote work opportunities rise by 12% in Europe</span>
+            <span class="ticker-item"><i class="fa-solid fa-user-doctor"></i> Healthcare sector faces shortage of 2M professionals</span>
+            <span class="ticker-item"><i class="fa-solid fa-leaf"></i> Green Energy becomes top employer in Nordic regions</span>
+            <span class="ticker-item"><i class="fa-solid fa-chart-line"></i> Data Science remains #1 most in-demand skill globally</span>
+        </div>
+    </div>
+
+    <div class="trends-header" style="background: linear-gradient(135deg, var(--primary-blue), #1557b0); color: white; padding: 4rem 2rem; text-align: center; margin-bottom: 2rem;">
+        <h1 style="font-size: 2.5rem; margin-bottom: 0.5rem;">Global Market Intelligence</h1>
+        <p style="opacity: 0.9;">Real-time insights into the world's fastest-moving career paths.</p>
+    </div>
+
+    <div class="container">
+        
+        <div class="trends-dashboard">
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h3><i class="fa-solid fa-chart-column"></i> Industry Growth Projections (2025)</h3>
+                </div>
+                <canvas id="industryChart"></canvas>
+            </div>
+
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h3><i class="fa-solid fa-chart-pie"></i> Work Mode Preference</h3>
+                </div>
+                <canvas id="remoteChart"></canvas>
+            </div>
+        </div>
+
+        <div class="section-header" style="margin-bottom: 1.5rem;">
+            <h2><i class="fa-solid fa-fire" style="color: #c5221f;"></i> Hot Jobs Right Now</h2>
+        </div>
+        
+        <div class="category-tabs" id="categoryTabs">
+            <button class="cat-tab active" data-cat="all">All Markets</button>
+            <button class="cat-tab" data-cat="tech">Tech & AI</button>
+            <button class="cat-tab" data-cat="health">Healthcare</button>
+            <button class="cat-tab" data-cat="finance">Finance</button>
+            <button class="cat-tab" data-cat="engineering">Engineering</button>
+        </div>
+
+        <div class="trends-grid" id="trendsGrid">
+            </div>
+
+    </div>
+
+    <script type="module" src="profile-load.js"></script>
+    <script src="theme.js"></script>
+    <script src="job-trends.js"></script>
+<script src="theme.js"></script>
+<script src="job-trends.js"></script>
+<script src="holiday.js"></script>
+<script src="ramadan.js"></script>
+</body>
+</html>

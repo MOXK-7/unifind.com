@@ -14,9 +14,7 @@
         rel="stylesheet">
 
     <style>
-
-
-        /* --- NAVBAR --- */
+        /* --- NAVBAR STYLES --- */
         .navbar {
             display: flex;
             justify-content: space-between;
@@ -49,23 +47,34 @@
         .nav-links {
             display: flex;
             list-style: none;
-            gap: 2rem;
+            /* REDUCED GAP from 2rem to 1rem to make everything fit */
+            gap: 1rem; 
             margin: 0;
             padding: 0;
+            align-items: center;
         }
 
         .nav-links li a {
             text-decoration: none;
             color: rgba(255, 255, 255, 0.95);
             font-weight: 500;
-            font-size: 0.95rem;
+            /* Slightly smaller font to prevent wrapping */
+            font-size: 0.9rem; 
             transition: color 0.2s;
+            white-space: nowrap; /* Prevents text from breaking */
         }
 
         .nav-links li a:hover,
         .nav-links li a.active {
             color: #ffffff;
             text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+        }
+
+        /* Styles for the specific Guide/Docs buttons to make them pop slightly */
+        .btn-guide, .btn-doc {
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
         /* --- HERO SECTION --- */
@@ -102,8 +111,7 @@
             font-family: 'Playfair Display', serif;
             font-weight: 900;
             font-style: italic;
-            color: #4facfe;
-            /* Cyan */
+            color: #4facfe; /* Cyan */
             font-size: 3.8rem;
             text-transform: uppercase;
         }
@@ -113,8 +121,7 @@
             font-family: 'Playfair Display', serif;
             font-weight: 700;
             font-style: italic;
-            color: #fbbc04;
-            /* Yellow */
+            color: #fbbc04; /* Yellow */
             font-size: 4.2rem;
             text-transform: uppercase;
         }
@@ -124,8 +131,7 @@
             font-family: 'Playfair Display', serif;
             font-weight: 900;
             font-style: italic;
-            color: #ff7e5f;
-            /* Coral */
+            color: #ff7e5f; /* Coral */
             font-size: 3.8rem;
             text-transform: uppercase;
         }
@@ -207,37 +213,13 @@
             transform: translateY(-3px) scale(1.1);
             background: white;
         }
-
-        .social-icon:hover .fa-facebook-f {
-            color: #1877f2;
-        }
-
-        .social-icon:hover .fa-instagram {
-            color: #e4405f;
-        }
-
-        .social-icon:hover .fa-x-twitter {
-            color: #000000;
-        }
-
-        /* Black for X */
-        .social-icon:hover .fa-linkedin-in {
-            color: #0077b5;
-        }
-
-        /* LinkedIn Blue */
-        .social-icon:hover .fa-youtube {
-            color: #ff0000;
-        }
-
-        /* YouTube Red */
-        .social-icon:hover .fa-telegram {
-            color: #0088cc;
-        }
-
-        .social-icon:hover .fa-tiktok {
-            color: #000000;
-        }
+        .social-icon:hover .fa-facebook-f { color: #1877f2; }
+        .social-icon:hover .fa-instagram { color: #e4405f; }
+        .social-icon:hover .fa-x-twitter { color: #000000; }
+        .social-icon:hover .fa-linkedin-in { color: #0077b5; }
+        .social-icon:hover .fa-youtube { color: #ff0000; }
+        .social-icon:hover .fa-telegram { color: #0088cc; }
+        .social-icon:hover .fa-tiktok { color: #000000; }
 
         @media (max-width: 768px) {
             #landing-hero h1 {
@@ -245,32 +227,18 @@
                 gap: 5px;
                 font-size: 2.5rem;
             }
-
-            .word-1,
-            .word-2,
-            .word-3 {
-                font-size: inherit;
-            }
-
-            #landing-hero p {
-                font-size: 1rem;
-            }
-
-            .navbar {
-                padding: 1rem;
-            }
-
-            .nav-links {
-                display: none;
-            }
-
+            .word-1, .word-2, .word-3 { font-size: inherit; }
+            #landing-hero p { font-size: 1rem; }
+            
+            .navbar { padding: 1rem; }
+            .nav-links { display: none; } /* Standard Mobile Menu Hide */
+            
             .hero-contact {
                 flex-direction: column;
                 gap: 15px;
                 width: 100%;
                 max-width: 300px;
             }
-
             .contact-pill {
                 justify-content: center;
                 width: 100%;
@@ -289,28 +257,29 @@
         </div>
 
         <ul class="nav-links">
-    <li><a href="index.html">Home</a></li>
-    <li><a href="dashboard.html">Search</a></li>
-    <li><a href="compare.html">Compare</a></li>
-    <li><a href="quiz.html">Quiz</a></li>
-    <li><a href="about.html">About</a></li>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="dashboard.html">Search</a></li>
+            <li><a href="compare.html">Compare</a></li>
+            <li><a href="quiz.html">Quiz</a></li>
+            <li><a href="job-trends.html">Job Trends</a></li>
+            <li><a href="about.html">About</a></li>
+            
+            <li>
+                <a href="https://docs.google.com/document/d/1mDSlOQvTFq4kVFMardxZnPWsXhve5Zrcy3m3r0VnNRo/edit?usp=sharing" 
+                   target="_blank" 
+                   class="btn-guide">
+                   <i class="fa-solid fa-book"></i> User Guide
+                </a>
+            </li>
 
-    <li>
-        <a href="https://docs.google.com/document/d/1mDSlOQvTFq4kVFMardxZnPWsXhve5Zrcy3m3r0VnNRo/edit?usp=sharing" 
-           target="_blank" 
-           class="btn-guide">
-           <i class="fa-solid fa-book"></i> User Guide
-        </a>
-    </li>
-
-    <li>
-        <a href="https://drive.google.com/file/d/1ir0zuvg1bpsiQObJYVYTI4l3HxAiL3di/view?usp=drive_link" 
-           target="_blank" 
-           class="btn-doc">
-           <i class="fa-solid fa-file-lines"></i> Docs
-        </a>
-    </li>
-</ul>
+            <li>
+                <a href="https://drive.google.com/file/d/1ir0zuvg1bpsiQObJYVYTI4l3HxAiL3di/view?usp=drive_link" 
+                   target="_blank" 
+                   class="btn-doc">
+                   <i class="fa-solid fa-file-lines"></i> Docs
+                </a>
+            </li>
+        </ul>
 
         <div class="nav-right" id="navAuth"></div>
     </nav>
@@ -366,6 +335,8 @@
     <script src="script.js"></script>
     <script type="module" src="profile-load.js"></script>
     <script src="theme.js"></script>
+    <script src="holiday.js"></script>
+    <script src="ramadan.js"></script>
 </body>
 
 </html>
