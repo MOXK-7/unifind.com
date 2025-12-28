@@ -1,9 +1,22 @@
 /**
- * ☪️ RAMADAN.JS - Perfect Transparent Crescent
- * - FIXED: Moon is now an 'Inset' shape. No dark circle overlays. Background stars show through.
- * - SIZE: Increased moon size significantly.
- * - BADGES: Golden Stats preserved.
+ * ☪️ RAMADAN.JS - Perfect Transparent Crescent + Seamless Audio + Glass Navbar & Hero
+ * - Updated: Fixed Golden Particles (Swaying)
+ * - Updated: Targeted fix for Job Trends Blue Bar (.trends-header)
  */
+
+const RAMADAN_SONG_URL = 'music/East duo.mp3'; 
+const AUDIO_TIME_KEY = 'ramadan-song-time'; 
+
+let ramadanAudio = new Audio(RAMADAN_SONG_URL);
+ramadanAudio.loop = true; 
+ramadanAudio.volume = 0.4;
+
+// --- PERSISTENCE ---
+window.addEventListener('beforeunload', () => {
+    if (localStorage.getItem('ramadan-skin') === 'enabled') {
+        sessionStorage.setItem(AUDIO_TIME_KEY, ramadanAudio.currentTime);
+    }
+});
 
 document.addEventListener('DOMContentLoaded', () => {
     injectRamadanStyles();
@@ -32,10 +45,22 @@ function enableRamadanMode() {
     createNeonBorder(); 
     createGoldenParticles();
     createHangingLantern();
-    createCrescentMoon(); // <--- NEW TRANSPARENT METHOD
+    createCrescentMoon(); 
     startShootingStars(); 
     enableCursorTrail();
-    showGreetingModal();
+    
+    if (!sessionStorage.getItem('ramadan-greeted')) {
+        showGreetingModal();
+    }
+    
+    const savedTime = sessionStorage.getItem(AUDIO_TIME_KEY);
+    if (savedTime && savedTime !== null) {
+        ramadanAudio.currentTime = parseFloat(savedTime);
+    }
+
+    ramadanAudio.play().catch(error => {
+        console.log("Browser blocked autoplay. User interaction required.");
+    });
     
     updateButtonState(true);
 }
@@ -44,12 +69,17 @@ function disableRamadanMode() {
     document.body.classList.remove('ramadan-mode');
     localStorage.setItem('ramadan-skin', 'disabled');
     
+    sessionStorage.removeItem(AUDIO_TIME_KEY); 
+    
     removeNeonBorder();
     removeGoldenParticles();
     removeHangingLantern();
     removeCrescentMoon();
     stopShootingStars();
     disableCursorTrail();
+    
+    ramadanAudio.pause();
+    ramadanAudio.currentTime = 0; 
     
     updateButtonState(false);
 }
@@ -78,7 +108,6 @@ function updateButtonState(isActive) {
 
 // --- VISUALS ---
 
-// 1. THE CRESCENT (New Inset Method)
 function createCrescentMoon() {
     if (document.getElementById('ramadan-moon-container')) return;
     const container = document.createElement('div');
@@ -91,7 +120,6 @@ function removeCrescentMoon() {
     if (el) el.remove();
 }
 
-// 2. SHOOTING STARS
 let starInterval;
 function startShootingStars() {
     if (starInterval) return;
@@ -119,7 +147,6 @@ function stopShootingStars() {
     if (el) el.remove();
 }
 
-// 3. CURSOR
 let cursorHandler;
 function enableCursorTrail() {
     if (cursorHandler) return;
@@ -143,7 +170,6 @@ function disableCursorTrail() {
     }
 }
 
-// 4. OTHER ASSETS
 function createNeonBorder() {
     if (document.getElementById('ramadan-neon')) return;
     const border = document.createElement('div');
@@ -222,7 +248,6 @@ function injectRamadanStyles() {
     style.innerHTML = `
         :root { --r-gold: #d4af37; --r-blue: #0f172a; }
         
-        /* 1. FORCE GOLD BADGES */
         body.ramadan-mode .badge,
         body.ramadan-mode .tag,
         body.ramadan-mode .status,
@@ -237,7 +262,6 @@ function injectRamadanStyles() {
             border-radius: 50px !important;
         }
 
-        /* 2. THE PERFECT TRANSPARENT CRESCENT */
         #ramadan-moon-container { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             pointer-events: none; z-index: -1; 
@@ -246,24 +270,11 @@ function injectRamadanStyles() {
         
         .perfect-crescent {
             position: absolute;
-            top: 15%;        
-            left: 5%;        
-            width: 250px;    /* Increased Size */
-            height: 250px;   /* Increased Size */
-            border-radius: 50%;
-            background: transparent;
-            
-            /* KEY FIX: 'inset' box shadow paints the INSIDE of the circle. 
-               This means there is no "second circle" overlapping. 
-               The empty space is truly transparent.
-            */
+            top: 15%; left: 5%; width: 250px; height: 250px;
+            border-radius: 50%; background: transparent;
             box-shadow: inset 50px 0 0 0 #ffd700;
-            
-            /* This adds the glow to the inset shape */
             filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.9));
-            
-            transform: rotate(-35deg);
-            opacity: 1; 
+            transform: rotate(-35deg); opacity: 1; 
             animation: lunarFloat 8s ease-in-out infinite;
         }
 
@@ -272,18 +283,52 @@ function injectRamadanStyles() {
             50% { transform: rotate(-35deg) translateY(-20px); }
         }
 
-        /* 3. ICON FIXES */
         body.ramadan-mode i, body.ramadan-mode .icon, body.ramadan-mode .fa, body.ramadan-mode .fas, body.ramadan-mode .far, body.ramadan-mode .fab, body.ramadan-mode .material-icons { color: var(--r-gold) !important; }
         body.ramadan-mode svg { fill: var(--r-gold) !important; stroke: var(--r-gold); }
 
-        /* 4. OVERRIDES */
         body.ramadan-mode { --primary-color: var(--r-blue) !important; color: #e2e8f0; }
         body.ramadan-mode .card, body.ramadan-mode .dashboard-card, body.ramadan-mode .container { background-color: rgba(30, 41, 59, 0.8); border-color: var(--r-gold); }
 
-        /* 5. ASSETS */
-        #ramadan-fab { position: fixed; bottom: 100px; right: 20px; width: 56px; height: 56px; border-radius: 50%; border: none; cursor: pointer; z-index: 10000; background: var(--r-gold); color: white; font-size: 24px; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.5); transition: 0.3s; }
+        #ramadan-fab { 
+            position: fixed; bottom: 30px; right: 30px; 
+            width: 56px; height: 56px; border-radius: 50%; border: none; cursor: pointer; z-index: 10000; background: var(--r-gold); color: white; font-size: 24px; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.5); transition: 0.3s; 
+        }
         #ramadan-fab.active { background: #334155; }
         
+        /* --- GLASSMORPHISM: NAV & HERO SECTIONS --- */
+        body.ramadan-mode nav, 
+        body.ramadan-mode .navbar, 
+        body.ramadan-mode header,
+        body.ramadan-mode .hero,
+        body.ramadan-mode .hero-section,
+        body.ramadan-mode .page-header,
+        body.ramadan-mode .banner,
+        body.ramadan-mode .bg-primary,
+        body.ramadan-mode [class*="blue-bg"] {
+            background: rgba(15, 23, 42, 0.6) !important; /* Dark Blue Glass */
+            backdrop-filter: blur(12px) !important;
+            -webkit-backdrop-filter: blur(12px) !important;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2) !important;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
+            transition: all 0.5s ease;
+        }
+        
+        /* --- TARGETED FIX FOR JOB TRENDS HEADER --- */
+        body.ramadan-mode .trends-header {
+            background: rgba(15, 23, 42, 0.65) !important; /* Transparent Dark Glass */
+            backdrop-filter: blur(12px) !important;
+            -webkit-backdrop-filter: blur(12px) !important;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3) !important;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
+        }
+
+        /* Fix text color inside that bar */
+        body.ramadan-mode .trends-header h1,
+        body.ramadan-mode .trends-header p {
+            color: #ffd700 !important; /* Gold Text */
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+
         #ramadan-neon { position: fixed; top: 0; left: 0; width: 100%; height: 4px; z-index: 10001; background: linear-gradient(90deg, #00d2ff, #ffd700, #9d00ff, #00d2ff); background-size: 400% 100%; animation: neonFlow 5s linear infinite; box-shadow: 0 0 15px rgba(0, 210, 255, 0.8); }
         
         #ramadan-star-layer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; overflow: hidden; }
@@ -307,6 +352,7 @@ function injectRamadanStyles() {
         .modal-content button { background: var(--r-gold); border: none; padding: 10px 25px; color: #1e293b; font-weight: bold; cursor: pointer; border-radius: 50px; }
 
         @keyframes riseUp { to { transform: translateY(-110vh); opacity: 0; } }
+        @keyframes particleSway { from { transform: translateX(-15px); } to { transform: translateX(15px); } }
         @keyframes gentleSwing { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }
         @keyframes flicker { 0% { opacity: 0.8; transform: translateX(-50%) scale(1); } 100% { opacity: 1; transform: translateX(-50%) scale(1.1); } }
         @keyframes neonFlow { 0% {background-position: 0% 50%;} 100% {background-position: 100% 50%;} }

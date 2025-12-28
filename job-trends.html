@@ -407,7 +407,13 @@
     <script src="job-trends.js"></script>
 <script src="theme.js"></script>
 <script src="job-trends.js"></script>
-<script src="holiday.js"></script>
 <script src="ramadan.js"></script>
+<script type="module">
+    import { initWaterService } from './water-reminder.js';
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        initWaterService();
+    });
+</script>
 </body>
 </html>

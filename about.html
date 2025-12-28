@@ -8,56 +8,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <link rel="shortcut icon" href="images/logo.ico" type="image/x-icon">
-        <script src="theme.js"></script>
-
+    <script src="theme.js"></script>
 
     <style>
-
-
-        /* --- NAVBAR --- */
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.8rem 2rem;
-            background-color: var(--primary-color);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
-            margin: 0;
-            padding: 0;
-        }
-
-        .nav-links li a {
-            text-decoration: none;
-            color: rgba(255, 255, 255, 0.95);
-            font-weight: 500;
-            font-size: 0.95rem;
-            transition: color 0.2s;
-        }
-
-        .nav-links li a:hover,
-        .nav-links li a.active {
-            color: #ffffff;
-            text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
-        }
-
-        /* --- UNIQUE STYLISH HERO SECTION --- */
+        /* Override for About Page Hero */
         #about-hero {
-            /* Animated Mesh Gradient Background */
             background: linear-gradient(-45deg, #0d47a1, #1a73e8, #4285f4, #1565c0);
             background-size: 400% 400%;
             animation: gradientBG 15s ease infinite;
-
             color: white;
             text-align: center;
             padding: 8rem 1rem;
@@ -65,12 +23,10 @@
             box-shadow: 0 10px 30px rgba(26, 115, 232, 0.2);
             position: relative;
             overflow: hidden;
-            /* Curved Bottom Edge for extra style */
             border-bottom-left-radius: 50% 10%;
             border-bottom-right-radius: 50% 10%;
         }
 
-        /* Geometric Overlay Pattern */
         #about-hero::before {
             content: "";
             position: absolute;
@@ -84,7 +40,6 @@
             pointer-events: none;
         }
 
-        /* Subtle Grid Texture */
         #about-hero::after {
             content: "";
             position: absolute;
@@ -99,17 +54,9 @@
         }
 
         @keyframes gradientBG {
-            0% {
-                background-position: 0% 50%;
-            }
-
-            50% {
-                background-position: 100% 50%;
-            }
-
-            100% {
-                background-position: 0% 50%;
-            }
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         #about-hero h1 {
@@ -132,24 +79,22 @@
             z-index: 2;
         }
 
-        /* --- CONTENT CONTAINER --- */
+        /* Container Override */
         .container {
             max-width: 1000px;
             margin: -4rem auto 0 auto;
-            /* Pull content up to overlap hero slightly */
             padding: 0 2rem 4rem 2rem;
             position: relative;
             z-index: 3;
         }
 
-        /* --- CARD STYLE --- */
+        /* About Sections */
         .about-section {
             background: var(--bg-card);
             padding: 3rem;
             border-radius: 20px;
             margin-bottom: 2rem;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-            /* Floating Effect */
             border: 1px solid rgba(0, 0, 0, 0.04);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
@@ -162,20 +107,19 @@
         .about-section h2 {
             font-size: 1.8rem;
             margin-bottom: 1.2rem;
-            color: var(--primary-color);
+            color: var(--primary-blue);
             font-weight: 800;
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
-        /* Decorative Icon for Headers */
         .about-section h2::before {
             content: '';
             display: block;
             width: 8px;
             height: 30px;
-            background: var(--primary-color);
+            background: var(--primary-blue);
             border-radius: 4px;
         }
 
@@ -185,16 +129,8 @@
             font-size: 1.1rem;
         }
 
-        /* --- RESPONSIVE --- */
+        /* Responsive */
         @media (max-width: 900px) {
-            .navbar {
-                padding: 1rem;
-            }
-
-            .nav-links {
-                display: none;
-            }
-
             #about-hero {
                 padding: 6rem 1rem 8rem 1rem;
                 border-radius: 0;
@@ -207,6 +143,10 @@
             .container {
                 margin-top: -3rem;
             }
+
+            .about-section {
+                padding: 2rem;
+            }
         }
     </style>
 </head>
@@ -217,32 +157,19 @@
             <div class="logo1">
                 <i class="fa-solid fa-graduation-cap logoicon"></i>
             </div>
-            <a href="index.html">UniFind</a>
+            UniFind
         </div>
 
-        <ul class="nav-links">
-    <li><a href="index.html">Home</a></li>
-    <li><a href="dashboard.html">Search</a></li>
-    <li><a href="compare.html">Compare</a></li>
-    <li><a href="quiz.html">Quiz</a></li>
-    <li><a href="about.html">About</a></li>
-<li><a href="job-trends.html">Job Trends</a></li>
-    <li>
-        <a href="https://docs.google.com/document/d/1mDSlOQvTFq4kVFMardxZnPWsXhve5Zrcy3m3r0VnNRo/edit?usp=sharing" 
-           target="_blank" 
-           class="btn-guide">
-           <i class="fa-solid fa-book"></i> User Guide
-        </a>
-    </li>
+        <div class="menu-toggle"><i class="fa-solid fa-bars"></i></div>
 
-    <li>
-        <a href="https://drive.google.com/file/d/1ir0zuvg1bpsiQObJYVYTI4l3HxAiL3di/view?usp=drive_link" 
-           target="_blank" 
-           class="btn-doc">
-           <i class="fa-solid fa-file-lines"></i> Docs
-        </a>
-    </li>
-</ul>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="dashboard.html">Search</a></li>
+            <li><a href="compare.html">Compare</a></li>
+            <li><a href="quiz.html">Quiz</a></li>
+            <li><a href="about.html" class="active">About</a></li>
+            <li><a href="job-trends.html">Job Trends</a></li>
+        </ul>
 
         <div class="nav-right" id="navAuth"></div>
     </nav>
@@ -279,12 +206,108 @@
                 universities side-by-side, and ultimately find the right fit for them. We are not just a search engine;
                 we are a dedicated partner in the journey of higher education.</p>
         </div>
+
+        <!-- Changelog Section -->
+        <div class="changelog-section about-section">
+            <h2>What's New</h2>
+            
+            <div class="changelog-container">
+                <div class="changelog-item">
+                    <div class="changelog-date">
+                        <span class="changelog-version">v2.0.0</span>
+                        <span class="changelog-time">December 2024</span>
+                    </div>
+                    <div class="changelog-content">
+                        <div class="changelog-tag new">New</div>
+                        <h4>💧 Customizable Water Reminders</h4>
+                        <p>Stay hydrated while studying! New fully customizable reminder system with adjustable intervals, durations, and first-reminder delay. Test your settings before applying them.</p>
+                    </div>
+                </div>
+
+                <div class="changelog-item">
+                    <div class="changelog-date">
+                        <span class="changelog-version">v2.0.0</span>
+                        <span class="changelog-time">December 2024</span>
+                    </div>
+                    <div class="changelog-content">
+                        <div class="changelog-tag improved">Improved</div>
+                        <h4>🌙 Enhanced Dark Mode</h4>
+                        <p>Complete dark mode overhaul with better contrast, readability, and visual consistency across all pages. All components now properly adapt to light and dark themes.</p>
+                    </div>
+                </div>
+
+                <div class="changelog-item">
+                    <div class="changelog-date">
+                        <span class="changelog-version">v2.0.0</span>
+                        <span class="changelog-time">December 2024</span>
+                    </div>
+                    <div class="changelog-content">
+                        <div class="changelog-tag new">New</div>
+                        <h4>📋 Modern Changelog System</h4>
+                        <p>Keep track of all platform updates with our new beautiful changelog interface. Color-coded tags for different update types and responsive design.</p>
+                    </div>
+                </div>
+
+                <div class="changelog-item">
+                    <div class="changelog-date">
+                        <span class="changelog-version">v1.5.0</span>
+                        <span class="changelog-time">November 2024</span>
+                    </div>
+                    <div class="changelog-content">
+                        <div class="changelog-tag new">New</div>
+                        <h4>🎉 Smart Greetings Feature</h4>
+                        <p>Dynamic welcome messages that adapt to time of day, special occasions, and holidays. Toggle between smart greetings and traditional welcome messages in settings.</p>
+                    </div>
+                </div>
+
+                <div class="changelog-item">
+                    <div class="changelog-date">
+                        <span class="changelog-version">v1.5.0</span>
+                        <span class="changelog-time">November 2024</span>
+                    </div>
+                    <div class="changelog-content">
+                        <div class="changelog-tag fixed">Fixed</div>
+                        <h4>📱 Mobile Responsiveness</h4>
+                        <p>Major improvements to layout and navigation on smaller screens. Better touch interactions, optimized filters sidebar, and improved comparison grid for mobile devices.</p>
+                    </div>
+                </div>
+
+                <div class="changelog-item">
+                    <div class="changelog-date">
+                        <span class="changelog-version">v1.4.0</span>
+                        <span class="changelog-time">October 2024</span>
+                    </div>
+                    <div class="changelog-content">
+                        <div class="changelog-tag improved">Improved</div>
+                        <h4>⚡ Performance Optimization</h4>
+                        <p>Faster page load times, optimized database queries, and improved search functionality. University comparison now loads 40% faster.</p>
+                    </div>
+                </div>
+
+                <div class="changelog-item">
+                    <div class="changelog-date">
+                        <span class="changelog-version">v1.3.0</span>
+                        <span class="changelog-time">September 2024</span>
+                    </div>
+                    <div class="changelog-content">
+                        <div class="changelog-tag new">New</div>
+                        <h4>🎯 University Quiz Feature</h4>
+                        <p>Discover your perfect university match with our interactive quiz. Get personalized recommendations based on your preferences, academic goals, and budget.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="script.js"></script>
     <script type="module" src="profile-load.js"></script>
-    <script src="holiday.js"></script>
     <script src="ramadan.js"></script>
+    <script type="module">
+        import { initWaterService } from './water-reminder.js';
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            initWaterService();
+        });
+    </script>
 </body>
-
 </html>

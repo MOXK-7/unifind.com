@@ -567,8 +567,13 @@
     <script type="module" src="profile-load.js"></script>
     <script type="module" src="greetings.js"></script>
     <script src="data-seeder.js"></script>
-    <script src="holiday.js"></script>
     <script src="ramadan.js"></script>
+    <script type="module">
+    import { initWaterService } from './water-reminder.js';
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        initWaterService();
+    });
+</script>
 </body>
-
 </html>

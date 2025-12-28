@@ -43,7 +43,7 @@
             padding: 0 5px;
         }
         .faq-item.active .faq-answer {
-            max-height: 200px; /* Adjust based on content length */
+            max-height: 200px;
             padding-bottom: 15px;
         }
         .faq-icon {
@@ -67,20 +67,82 @@
             margin-left: 5px;
             border: 1px solid var(--border-color);
         }
+        
+        /* Water Reminder Advanced Settings */
+        .reminder-settings {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--bg-light);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .setting-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .setting-row:last-child {
+            margin-bottom: 0;
+        }
+        
+        .setting-label {
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+        
+        .setting-input-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .setting-input {
+            width: 80px;
+            padding: 0.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: var(--bg-card);
+            color: var(--text-dark);
+            font-size: 0.95rem;
+        }
+        
+        .setting-unit {
+            color: var(--text-grey);
+            font-size: 0.9rem;
+        }
+        
+        .test-button {
+            padding: 0.5rem 1rem;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: opacity 0.2s;
+        }
+        
+        .test-button:hover {
+            opacity: 0.9;
+        }
+        
+        .test-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
     </style>
 </head>
 <body>
     <nav class="navbar">
-        <!-- <div class="logo">
-            <i class="fa-solid fa-graduation-cap"></i> UniFind
-        </div> -->
-               <div class="logo">
-
-                                <div class="logo1">
-                        <i class="fa-solid fa-graduation-cap logoicon"></i>
-                    </div>
-                    UniFind
-                            </div>
+        <div class="logo">
+            <div class="logo1">
+                <i class="fa-solid fa-graduation-cap logoicon"></i>
+            </div>
+            UniFind
+        </div>
         <div class="menu-toggle"><i class="fa-solid fa-bars"></i></div>
         <ul class="nav-links">
             <li><a href="index.html">Home</a></li>
@@ -108,11 +170,9 @@
                 <ul class="profile-menu">
                     <li onclick="window.location.href='profile.html'">
                         <i class="fa-solid fa-bookmark"></i> Saved Universities
-                        <!-- <span id="savedCount" class="badge">0</span> -->
                     </li>
                     <li onclick="window.location.href='compare.html'">
                         <i class="fa-solid fa-exchange-alt"></i> My Comparisons
-                        <!-- <span id="comparisonsCount" class="badge">0</span> -->
                     </li>
                     <li class="active" onclick="window.location.href='settings.html'">
                         <i class="fa-solid fa-cog"></i> Settings
@@ -164,58 +224,79 @@
                     </div>
                 </div>
 
-                <!-- Notifications Section -->
-                <!-- <div class="settings-section">
-                    <h2><i class="fa-solid fa-bell" style="margin-right: 0.5rem;"></i>Notifications</h2>
+                <!-- Water Reminder Section -->
+                <div class="settings-section">
+                    <h2><i class="fa-solid fa-droplet" style="margin-right: 0.5rem;"></i>Water Reminder</h2>
                     
                     <div class="toggle-switch">
                         <div>
-                            <label style="font-weight: 500;">New University Programs</label>
+                            <label style="font-weight: 500;">💧 Hydration Reminders</label>
                             <p style="font-size: 0.9rem; color: var(--text-grey); margin-top: 0.25rem;">
-                                Get notified when new programs are added
+                                Get periodic reminders to stay hydrated while studying
                             </p>
                         </div>
                         <label class="switch">
-                            <input type="checkbox" id="notifyPrograms" >
+                            <input type="checkbox" id="waterReminderToggle">
                             <span class="slider"></span>
                         </label>
                     </div>
 
-                    <div class="toggle-switch">
-                        <div>
-                            <label style="font-weight: 500;">Fee Updates</label>
-                            <p style="font-size: 0.9rem; color: var(--text-grey); margin-top: 0.25rem;">
-                                Notify me when saved universities update fees
-                            </p>
+                    <!-- Advanced Water Reminder Settings -->
+                    <div class="reminder-settings" id="reminderAdvancedSettings" style="display: none;">
+                        <h4 style="margin-bottom: 1rem; color: var(--text-dark);">
+                            <i class="fa-solid fa-sliders"></i> Customize Your Reminders
+                        </h4>
+                        
+                        <div class="setting-row">
+                            <span class="setting-label">Reminder Interval</span>
+                            <div class="setting-input-group">
+                                <input type="number" id="reminderInterval" class="setting-input" 
+                                       min="5" max="120" value="30">
+                                <span class="setting-unit">minutes</span>
+                            </div>
                         </div>
-                        <label class="switch">
-                            <input type="checkbox" id="notifyFees" >
-                            <span class="slider"></span>
-                        </label>
-                    </div>
 
-                    <div class="toggle-switch">
-                        <div>
-                            <label style="font-weight: 500;">Weekly Newsletter</label>
-                            <p style="font-size: 0.9rem; color: var(--text-grey); margin-top: 0.25rem;">
-                                Receive weekly updates and tips
-                            </p>
+                        <div class="setting-row">
+                            <span class="setting-label">Display Duration</span>
+                            <div class="setting-input-group">
+                                <input type="number" id="reminderDuration" class="setting-input" 
+                                       min="3" max="15" value="7">
+                                <span class="setting-unit">seconds</span>
+                            </div>
                         </div>
-                        <label class="switch">
-                            <input type="checkbox" id="newsletter">
-                            <span class="slider"></span>
-                        </label>
-                    </div>
-                </div> -->
 
-                <!-- NEW: About Section (Version 1: With FAQ) -->
+                        <div class="setting-row">
+                            <span class="setting-label">First Reminder Delay</span>
+                            <div class="setting-input-group">
+                                <input type="number" id="firstReminderDelay" class="setting-input" 
+                                       min="1" max="10" value="2">
+                                <span class="setting-unit">seconds</span>
+                            </div>
+                        </div>
+
+                        <div class="setting-row" style="gap: 0.75rem;">
+                            <button class="test-button" id="testReminderBtn">
+                                <i class="fa-solid fa-vial"></i> Test Reminder
+                            </button>
+                            <button class="test-button" id="saveReminderBtn" style="background: #27ae60; flex: 1;">
+                                <i class="fa-solid fa-check"></i> Save Changes
+                            </button>
+                        </div>
+
+                        <p style="font-size: 0.85rem; color: var(--text-grey); margin-top: 0.5rem; font-style: italic;">
+                            💡 Tip: Test your settings first, then click Save Changes to apply!
+                        </p>
+                    </div>
+                </div>
+
+                <!-- About Section -->
                 <div class="settings-section">
                     <h2><i class="fa-solid fa-circle-info" style="margin-right: 0.5rem;"></i>About</h2>
                     
                     <div class="about-header">
                         <div class="logov">
-                        <i class="fa-solid fa-graduation-cap" style="font-size: 3.5rem; color: white; margin-bottom: 1rem;"></i>
-                    </div>
+                            <i class="fa-solid fa-graduation-cap" style="font-size: 3.5rem; color: white; margin-bottom: 1rem;"></i>
+                        </div>
                         <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem;">
                             UniFind <span class="version-badge">v2.0.0</span>
                         </h3>
@@ -267,6 +348,7 @@
     <script type="module" src="profile-load.js"></script>
     <script type="module" src="settings.js"></script> 
     <script type="module" src="greetings.js"></script>
+    <script type="module" src="water-reminder.js"></script>
     <script src="script.js"></script>
 
     <!-- FAQ Animation Script -->
@@ -278,10 +360,9 @@
                 const question = item.querySelector('.faq-question');
                 
                 question.addEventListener('click', () => {
-                    // Toggle active class
                     const isActive = item.classList.contains('active');
                     
-                    // Close all other items (optional - remove if you want multiple open)
+                    // Close all other items
                     faqItems.forEach(otherItem => {
                         otherItem.classList.remove('active');
                     });
@@ -294,7 +375,6 @@
             });
         });
     </script>
-    <script src="holiday.js"></script>
     <script src="ramadan.js"></script>
 </body>
 </html>

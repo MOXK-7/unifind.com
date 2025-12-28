@@ -204,8 +204,13 @@
     <script type="module" src="profile.js"></script>
     <script src="script.js"></script>
     <script src="theme.js"></script>
-    <script src="holiday.js"></script>
     <script src="ramadan.js"></script>
+    <script type="module">
+    import { initWaterService } from './water-reminder.js';
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        initWaterService();
+    });
+</script>
 </body>
-
 </html>
